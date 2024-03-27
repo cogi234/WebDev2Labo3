@@ -1,0 +1,8 @@
+﻿1. ConnectedUsersId DONE
+2. Updater une liste des users connecter DONE
+3. Empecher double connexion DONE
+4. Gestion d'expiration de session DONE
+5. Icone fa-users pour voir Accounts/UsersList. Juste pour admins DONE
+6. Creer Accounts/UsersList DONE
+7. Icone fa-enveloppe pour aller a Acccounts/GroupEmails. Juste pour admins DONE
+8. Creer Acccounts/GroupEmails DONE

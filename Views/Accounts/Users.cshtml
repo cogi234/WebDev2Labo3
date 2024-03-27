@@ -1,0 +1,104 @@
+﻿@model IEnumerable<MoviesDBManager.Models.User>
+
+@{
+    var currentUser = MoviesDBManager.Models.OnlineUsers.GetSessionUser();
+}
+
+@foreach (var user in Model)
+{
+    if (user != currentUser)
+    {
+        string imageStatus;
+        string titleStatus;
+        if (user.Blocked)
+        {
+            imageStatus = "/Content/UI-Images/Masked.png";
+            titleStatus = "Bloqué";
+        }
+        else if (MoviesDBManager.Models.OnlineUsers.IsOnline(user.Id))
+        {
+            imageStatus = "/Content/UI-Images/Online.png";
+            titleStatus = "Connecté";
+        }
+        else
+        {
+            imageStatus = "/Content/UI-Images/Offline.png";
+            titleStatus = "Hors ligne";
+        }
+
+        string imageType;
+        string titleType;
+        string idType = $"userType{user.Id}";
+        string functionType = "$.ajax({type: \"POST\", url: \"ChangeUserType\", data: { userId: \"" + user.Id + "\" }, complete: function (data, status) { users.refresh(true); }})";
+        switch (user.UserTypeId)
+        {
+            case 1:
+                imageType = "/Content/UI-Images/admin.png";
+                titleType = "Administrateur";
+                break;
+            case 2:
+                imageType = "/Content/UI-Images/power_user.png";
+                titleType = "Privilégié";
+                break;
+            case 3:
+            default:
+                imageType = "/Content/UI-Images/user.png";
+                titleType = "Utilisateur";
+                break;
+        }
+
+        string imageVerified;
+        string titleVerified;
+        if (user.Verified)
+        {
+            imageVerified = "/Content/UI-Images/Accept.png";
+            titleVerified = "Vérifié";
+        }
+        else
+        {
+            imageVerified = "/Content/UI-Images/Abort.png";
+            titleVerified = "Non vérifié";
+        }
+
+        string blocked = user.Blocked ? "checked" : "";
+        string idBlock = $"userBlock{user.Id}";
+        string functionBlock = "$.ajax({type: \"POST\", url: \"ChangeUserBlock\", data: { userId: \"" + user.Id + "\" }, complete: function (data, status) { users.refresh(true); }})";
+
+        string idRemove = $"userRemove{user.Id}";
+        string functionRemove = "bootbox.confirm('Effacer le compte " + user.GetFullName() + "?', function(result){ if (result) $.ajax({type: \"POST\", url: \"RemoveUser\", data: { userId: \"" + user.Id + "\" }, complete: function (data, status) { users.refresh(true); }}); })";
+
+        <div class="UserContainer">
+            <div class="UserSmallAvatar" style="background: url(@user.Avatar)"></div>
+            <div>@user.GetFullName()</div>
+            <div class="UserSmallAvatar" title="@titleStatus" style="background: url(@imageStatus)"></div>
+            <div id="@idType" class="UserSmallAvatar" title="@titleType" style="background: url(@imageType)" onclick="@functionType"></div>
+            <div class="UserSmallAvatar" title="@titleVerified" style="background: url(@imageVerified)"></div>
+            <input id="@idBlock" type="checkbox" title="Bloquer" @blocked onchange="@functionBlock" />
+            <div id="@idRemove" title="Retrait de l'usager" class="menu-Icon fa fa-times-circle" style="color:red; font-size: 40px" onclick="@functionRemove"></div>
+            <script defer>
+                $("@idType").click(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "ChangeUserType",
+                        data: { userId: "@user.Id" },
+                        complete: function (data, status) {
+                            users.refresh(true);
+                        }
+                    });
+                });
+                $("@idBlock").click(function () {
+                    console.log("Clicked Block @user.Id");
+                    $.post("Accounts/ChangeUserBlock",
+                        {
+                            userId: "@user.Id"
+                        },
+                        function (data, status) {
+                            users.refresh(true);
+                        }
+                    );
+                });
+            </script>
+        </div>
+    }
+}
+

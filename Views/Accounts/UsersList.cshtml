@@ -1,0 +1,15 @@
+﻿@model IEnumerable<MoviesDBManager.Models.User>
+
+@{
+    ViewBag.Title = "Liste des usagers";
+}
+
+<h2>Liste des usagers</h2>
+
+<div class="UsersContainer" id="UsersContainer"> <!-- Refreshed periodically --> </div>
+
+@section Scripts {
+    <script defer>
+        let users = new PartialRefresh("@Url.Action("Users")", "UsersContainer", 15);
+    </script>
+}

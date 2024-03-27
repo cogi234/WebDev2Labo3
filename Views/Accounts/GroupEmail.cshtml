@@ -1,0 +1,65 @@
+﻿@model IEnumerable<MoviesDBManager.Models.User>
+
+@{
+    ViewBag.Title = "GroupEmail";
+    string destinationsError = ViewBag.DestinationsError ?? "";
+    string subjectError = ViewBag.SubjectError ?? "";
+    string bodyError = ViewBag.BodyError ?? "";
+
+    string subject = ViewBag.Subject ?? "";
+    string body = ViewBag.Body ?? "Bonjour [Nom],\n";
+}
+
+<h2>Envoi de courriel</h2>
+
+@if (ViewBag.Message != null)
+{
+    <h3>@ViewBag.Message</h3>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <h4 style="color:dodgerblue">Destinataires</h4>
+        <div class="EmailFormButtonsContainer">
+            <input class="btn btn-default" type="button" value="Tous" onclick="CheckAll()" />
+            <div></div>
+            <input class="btn btn-default" type="button" value="Aucun" onclick="UncheckAll()" />
+        </div>
+        <fieldset id="checkboxes">
+            @foreach (var user in Model)
+            {
+                <div class="UserCheckboxContainer">
+                    <input type="checkbox" id="destinations" name="destinations" value="@user.Id" />
+                    <div class="UserSmallAvatar" style="background: url(@user.Avatar)"></div>
+                    <div>@user.GetFullName()</div>
+                </div>
+            }
+        </fieldset>
+        <div class="field-validation-valid text-danger">@destinationsError</div>
+    </fieldset>
+    <fieldset>
+        <h4 style="color:dodgerblue">Courriel</h4>
+        <input class="form-control" type="text" placeholder="Sujet" id="subject" name="subject" value="@subject" />
+        <span class="field-validation-valid text-danger">@subjectError</span>
+        <br />
+        <textarea class="form-control" id="body" name="body" rows="10">@body</textarea>
+        <p class="EmailBodyNote">Note: [Nom] sera remplacé par une désignation (par exemple: Monsieur) suivi du nom de famille du destinataire</p>
+        <div class="field-validation-valid text-danger">@bodyError</div>
+    </fieldset>
+
+    <input type="submit" value="Envoyer" class="btn btn-default" />
+}
+
+<script defer>
+    function CheckAll() {
+        var checkboxes = $("#checkboxes").find(":checkbox");
+        checkboxes.prop('checked', 'checked');
+    }
+    function UncheckAll() {
+        var checkboxes = $("#checkboxes").find(":checkbox");
+        checkboxes.prop('checked', '');
+    }
+</script>
+
