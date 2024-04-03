@@ -30,7 +30,7 @@
                     <a href="/Distributors/Index">
                         <img src="/Distributors_Logo.png" class="menuIcon" title="Liste des distributeurs" />
                     </a>
-                    if (currentUser.IsAdmin || true)
+                    if (currentUser.IsAdmin)
                     {
                         @Helper.IconCmd("Accounts", "UsersList", "menu-Icon fa fa-users", "Liste des usagers")
                         @Helper.IconCmd("Accounts", "GroupEmail", "menu-Icon fa fa-enveloppe", "Envoi de courriels")
@@ -59,7 +59,7 @@
 
     @if (MoviesDBManager.Models.OnlineUsers.GetSessionUser() != null){
         <script defer>
-            initTimeout(300);
+            initTimeout(120);
         </script>
     }
 </body>

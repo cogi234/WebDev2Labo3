@@ -182,7 +182,6 @@
     <Content Include="Content\UI-Images\admin.png" />
     <Content Include="Content\UI-Images\Blocked.png" />
     <Content Include="Content\UI-Images\Masked.png" />
-    <Content Include="Content\UI-Images\neutral.png" />
     <Content Include="Content\UI-Images\Offline.png" />
     <Content Include="Content\UI-Images\Online.png" />
     <Content Include="Content\UI-Images\power_user.png" />
@@ -265,6 +264,7 @@
     <Content Include="App_Data\UnverifiedEmails.json" />
     <Content Include="App_Data\Users.json" />
     <Content Include="PLan de site.pdf" />
+    <None Include="Properties\PublishProfiles\Labo0320240403080517 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\MDB2023 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\MoviesRepository - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
